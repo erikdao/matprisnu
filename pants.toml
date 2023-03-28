@@ -1,0 +1,24 @@
+[GLOBAL]
+pants_version = "2.15.0"
+
+backend_packages = [
+  "pants.backend.python",
+  "pants.backend.python.lint.docformatter",
+  "pants.backend.python.lint.black",
+  "pants.backend.python.lint.flake8",
+  "pants.backend.python.lint.isort",
+  "pants.backend.python.lint.bandit",
+]
+
+[source]
+# The Python source root is the repo root. See https://pants.readme.io/docs/source-roots.
+root_patterns = [
+    "matprisnu/src/python/scrappers/src",
+    "matprisnu/src/python/data_models/src",
+]
+
+[python]
+interpreter_constraints = [">=3.9"]
+
+[bandit]
+args = ["--skip B101,B104"]

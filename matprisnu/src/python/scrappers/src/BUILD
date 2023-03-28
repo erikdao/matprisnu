@@ -1,0 +1,9 @@
+python_sources(
+    name="scrappers",
+    sources=[
+        "scrappers/**/*.py",
+    ],
+    dependencies=[
+        "matprisnu/src/python/data_models/src::data_models",
+    ]
+)

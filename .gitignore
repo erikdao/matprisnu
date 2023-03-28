@@ -1,0 +1,3 @@
+# Pants build
+.pants*
+.pids
