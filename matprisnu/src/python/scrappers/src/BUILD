@@ -5,5 +5,5 @@ python_sources(
     ],
     dependencies=[
         "matprisnu/src/python/data_models/src::data_models",
-    ]
+    ],
 )

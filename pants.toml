@@ -5,20 +5,32 @@ backend_packages = [
   "pants.backend.python",
   "pants.backend.python.lint.docformatter",
   "pants.backend.python.lint.black",
+  "pants.backend.python.lint.autoflake",
   "pants.backend.python.lint.flake8",
   "pants.backend.python.lint.isort",
   "pants.backend.python.lint.bandit",
+  "pants.backend.build_files.fmt.black",
 ]
 
 [source]
 # The Python source root is the repo root. See https://pants.readme.io/docs/source-roots.
 root_patterns = [
-    "matprisnu/src/python/scrappers/src",
-    "matprisnu/src/python/data_models/src",
+    "/matprisnu/src/python/",
+    "/matprisnu/src/python/scrappers/src",
+    "/matprisnu/src/python/data-models/src",
+    "/matprisnu/src/python/data-models/tests",
 ]
 
 [python]
 interpreter_constraints = [">=3.9"]
+enable_resolves = true
+
+[python.resolves]
+python-default = "3rdparty/python/default.lock" 
 
 [bandit]
 args = ["--skip B101,B104"]
+
+[anonymous-telemetry]
+enabled = true
+repo_id = "d140fcf8-d779-44c8-a2e9-576e6ec30dc4"
