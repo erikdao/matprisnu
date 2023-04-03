@@ -3,5 +3,7 @@
 .pids
 
 .env
+.venv
 
 dist/
+*.egg-info

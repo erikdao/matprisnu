@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "data-models"
+version = "0.1.0"
+description = "Data models for matprisnu"
+authors = ["Erik Dao <cuong@neuraltalks.io>"]
+readme = "README.md"
+packages = [{include = "data_models", from = "src"}]
+classifiers = [
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3.9",
+]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+pydantic = "^1.10.0"
+
+[tool.semantic_release]
+branch = "main"
+version_variable = "src/data_models/__init__.py:__version__"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

@@ -1,0 +1,29 @@
+version: '3.8'
+
+volumes:
+  mongodb:
+  postgresql:
+
+services:
+  postgresql:
+    image: postgres:latest
+    container_name: postgresql-server
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgresql:/var/lib/postgresql/data
+    
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb-server
+    hostname: mongodb-docker.local
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: rootpassword
+    volumes:
+      - mongodb:/data/db
