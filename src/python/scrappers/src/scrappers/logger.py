@@ -6,8 +6,11 @@ import os
 import sentry_sdk
 from dotenv import load_dotenv
 from loguru import logger
-from sentry_sdk.integrations.logging import (BreadcrumbHandler, EventHandler,
-                                             LoggingIntegration)
+from sentry_sdk.integrations.logging import (
+    BreadcrumbHandler,
+    EventHandler,
+    LoggingIntegration,
+)
 
 load_dotenv(os.path.join(os.getcwd(), ".env"))
 

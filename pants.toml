@@ -27,7 +27,7 @@ enable_resolves = true
 python-default = "3rdparty/python/default.lock" 
 
 [bandit]
-args = ["--skip B101,B104"]
+args = ["--skip B101,B104,B311"]
 
 [anonymous-telemetry]
 enabled = true

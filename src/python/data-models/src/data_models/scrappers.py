@@ -5,7 +5,7 @@ from pydantic import BaseModel
 
 
 class CoopAPICategory(BaseModel):
-    """ "Category model for Coop API."""
+    """Category model for Coop API."""
 
     id: int
     name: str
