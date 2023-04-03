@@ -34,9 +34,5 @@ python_distribution(
 pex_binary(
     name="scrappers-cli",
     entry_point="scrappers/cli.py:main",
-    dependencies=[
-        ":pyproject",
-        ":scrappers",
-        "src/python/data-models/src:data_models"
-    ],
+    dependencies=[":pyproject", ":scrappers", "src/python/data-models/src:data_models"],
 )

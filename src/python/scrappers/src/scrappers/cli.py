@@ -1,11 +1,11 @@
 """CLI-interface for scrappers."""
+import asyncio
 import importlib
 from pathlib import Path
 
-import asyncio
 import click
-
 from scrappers.common import init_storage_dir
+
 
 @click.group()
 def stores_cli():
@@ -14,7 +14,12 @@ def stores_cli():
 
 @stores_cli.command("stores")
 @click.argument("brand", type=str)
-@click.option("--output-path", type=click.Path(exists=True), default="data", help="Path to output directory")
+@click.option(
+    "--output-path",
+    type=click.Path(exists=True),
+    default="data",
+    help="Path to output directory",
+)
 def stores_command(brand: str, output_path: str):
     output_path = Path(output_path).resolve()
 
