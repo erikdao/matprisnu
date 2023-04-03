@@ -19,24 +19,24 @@ jobs:
       matrix:
         python-version: [3.9]
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python-version }}
-      - uses: pantsbuild/actions/init-pants@v4-scie-pants
-        with:
-          gha-cache-key: v0
-          named-caches-hash: ${{ hashFiles('python-default.lock') }}
-          cache-lmdb-store: 'true'
-      - name: Check BUILD files
-        run: |
-          pants tailor --check update-build-files --check ::
-      - name: Lint and typecheck
-        run: |
-          pants lint check ::
-      - name: Upload pants log
-        use: actions/upload-artifact@v3
-        with:
-          name: pants-log
-          path: .pants.d/pants.log
-        if: always()  # We want the log event on failure
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    - uses: pantsbuild/actions/init-pants@v4-scie-pants
+      with:
+        gha-cache-key: v0
+        named-caches-hash: ${{ hashFiles('python-default.lock') }}
+        cache-lmdb-store: 'true'
+    - name: Check BUILD files
+      run: |
+        pants tailor --check update-build-files --check ::
+    - name: Lint and typecheck
+      run: |
+        pants lint check ::
+    - name: Upload pants log
+      use: actions/upload-artifact@v3
+      with:
+        name: pants-log
+        path: .pants.d/pants.log
+      if: always()  # We want the log event on failure
