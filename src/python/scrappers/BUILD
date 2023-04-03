@@ -4,7 +4,7 @@ python_sources(
         "src/scrappers/**/*.py",
     ],
     dependencies=[
-        "src/python/data-models/src::data_models",
+        "src/python/data-models/src:data_models",
     ],
 )
 
@@ -21,4 +21,15 @@ python_distribution(
     ),
     # Example of setuptools config, other build backends may have other config.
     wheel_config_settings={"--build-option": ["--python-tag", "py39"]},
+)
+
+pex_binary(
+    name="scrappers-cli",
+    entry_point="src/scrappers/cli.py:main",
+    dependencies=[
+        ":pyproject",
+        ":scrappers",
+        "src/python/data-models/src:data_models"
+    ],
+    interpreter_constraints=["CPython>=3.9"],
 )

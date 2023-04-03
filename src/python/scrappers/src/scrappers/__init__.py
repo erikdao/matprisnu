@@ -1,3 +1,1 @@
-from importlib.metadata import version
-
-__version__ = version("scrappers")
+__version__ = "0.1.0"

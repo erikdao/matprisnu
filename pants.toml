@@ -15,8 +15,10 @@ backend_packages = [
 [source]
 # The Python source root is the repo root. See https://pants.readme.io/docs/source-roots.
 root_patterns = [
-    "src/python/scrappers",
-    "src/python/data-models",
+    "src/python/scrappers/src",
+    "src/python/scrappers/tests",
+    "src/python/data-models/src",
+    "src/python/data-models/tests",
 ]
 
 [python]
