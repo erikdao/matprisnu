@@ -6,7 +6,6 @@ authors = ["Erik Dao <cuong@neuraltalks.io>"]
 readme = "README.md"
 packages = [{include = "scrappers", from = "src"}]
 classifiers = [
-    "Intended Audience :: Developers",
     "Programming Language :: Python :: 3.9",
 ]
 
