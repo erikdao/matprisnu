@@ -1,4 +1,5 @@
 from importlib.metadata import version
+
 from .scrappers import (AxfoodAPIProduct, CoopAPICategory, IcaAPICategory,
                         IcaAPIStore)
 

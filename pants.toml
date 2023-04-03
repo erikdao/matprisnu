@@ -1,6 +1,5 @@
 [GLOBAL]
 pants_version = "2.15.0"
-pants_global_pex_build_args = "--no-venv"
 
 backend_packages = [
   "pants.backend.python",
