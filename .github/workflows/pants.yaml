@@ -5,14 +5,13 @@ on: [push, pull_request]
 jobs:
   org-check:
     name: Check GitHub Owner
-    if: ${{ github.repository_owner == 'erikdao'}}
+    if: ${{ github.repository_owner == 'erikdao' }}
     runs-on: ubuntu-20.04
     steps:
       - name: Noop
         run: "true"
-  
   build:
-    name: Perform CI checks
+    name: Perform CI Checks
     needs: org-check
     runs-on: ubuntu-20.04
     strategy:
@@ -27,16 +26,16 @@ jobs:
       with:
         gha-cache-key: v0
         named-caches-hash: ${{ hashFiles('python-default.lock') }}
-        cache-lmdb-store: 'true'
+        cache-lmdb-store: 'true'  # defaults to 'false'
     - name: Check BUILD files
-      run: |
+      run:  |
         pants tailor --check update-build-files --check ::
     - name: Lint and typecheck
-      run: |
+      run: | 
         pants lint check ::
     - name: Upload pants log
-      use: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v3
       with:
         name: pants-log
         path: .pants.d/pants.log
-      if: always()  # We want the log event on failure
+      if: always()  # We want the log even on failures.
