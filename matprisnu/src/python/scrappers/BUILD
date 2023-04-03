@@ -1,26 +1,32 @@
 python_sources(
-    name="data_models",
+    name="scrappers",
     sources=[
-        "data_models/**/*.py",
+        "scrappers/**/*.py",
     ],
-    dependencies=["3rdparty/python#pydantic"],
+    dependencies=[
+        "matprisnu/src/python/data_models/src::data_models",
+    ],
 )
 
 python_distribution(
     name="dist",
     dependencies=[
-        "3rdparty/python#pydantic",
-        # Dependencies on code to be packaged into the distribution.
+        ":scrappers",
+        "3rdparty/python#python-dotenv",
+        "3rdparty/python#tornado",
+        "3rdparty/python#pymongo",
+        "3rdparty/python#motor",
+        "3rdparty/python#loguru",
     ],
     provides=python_artifact(
-        name="data_models",
+        name="scrappers",
         version="0.1.0",
-        description="Data models for the matprisnu project.",
+        description="Scrappers for collecting data from Swedish supermarkets.",
         author="Erik Dao",
         author_email="cuong@neuraltalks.io",
         readme="README.md",
         classifiers=[
-            "Programming Language :: Python :: 3.7",
+            "Programming Language :: Python :: 3.9",
         ],
     ),
     # Example of setuptools config, other build backends may have other config.
@@ -32,3 +38,6 @@ python_distribution(
     # generate_setup_default = false
     generate_setup=True,
 )
+
+# Configure to build a pex binary for scrappers package.
+pex_binary(name="scrappers", entry_point="scrappers.main:main", dependencies=[":dist"] )
