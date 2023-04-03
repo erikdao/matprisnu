@@ -11,7 +11,6 @@ python_sources(
 python_distribution(
     name="dist",
     dependencies=[
-        ":scrappers",
         "3rdparty/python#python-dotenv",
         "3rdparty/python#tornado",
         "3rdparty/python#pymongo",
@@ -38,6 +37,3 @@ python_distribution(
     # generate_setup_default = false
     generate_setup=True,
 )
-
-# Configure to build a pex binary for scrappers package.
-pex_binary(name="scrappers", entry_point="scrappers.main:main", dependencies=[":dist"] )

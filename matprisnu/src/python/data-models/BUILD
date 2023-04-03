@@ -10,7 +10,6 @@ python_distribution(
     name="dist",
     dependencies=[
         "3rdparty/python#pydantic",
-        # Dependencies on code to be packaged into the distribution.
     ],
     provides=python_artifact(
         name="data_models",
@@ -20,15 +19,8 @@ python_distribution(
         author_email="cuong@neuraltalks.io",
         readme="README.md",
         classifiers=[
-            "Programming Language :: Python :: 3.7",
+            "Programming Language :: Python :: 3.9",
         ],
     ),
-    # Example of setuptools config, other build backends may have other config.
     wheel_config_settings={"--global-option": ["--python-tag", "py39"]},
-    # Don't use setuptools with a generated setup.py.
-    # You can also turn this off globally in pants.toml:
-    #
-    # [setup-py-generation]
-    # generate_setup_default = false
-    generate_setup=True,
 )
