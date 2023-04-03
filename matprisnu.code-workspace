@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"python.linting.flake8Path": "dist/export/python/virtualenvs/flake8/bin/flake8",
+		"python.formatting.blackPath": "dist/export/python/virtualenvs/black/bin/black",
+		"python.sortImports.path": "dist/export/python/virtualenvs/isort/bin/isort",
+	}
+}

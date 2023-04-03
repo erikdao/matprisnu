@@ -11,6 +11,7 @@ resource(name="pyproject", source="pyproject.toml")
 python_distribution(
     name="dist",
     dependencies=[
+        ":data_models",
         ":pyproject",
     ],
     provides=python_artifact(

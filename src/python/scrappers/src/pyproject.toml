@@ -3,8 +3,7 @@ name = "scrappers"
 version = "0.1.0"
 description = "Scrappers for collecting data from supermarkets in Sweden."
 authors = ["Erik Dao <cuong@neuraltalks.io>"]
-readme = "README.md"
-packages = [{include = "scrappers", from = "src"}]
+packages = [{include = "scrappers"}]
 classifiers = [
     "Programming Language :: Python :: 3.9",
 ]
@@ -22,7 +21,7 @@ click = "^8.0.3"
 
 [tool.semantic_release]
 branch = "main"
-version_variable = "src/scrappers/__init__.py:__version__"
+version_variable = "scrappers/__init__.py:__version__"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
