@@ -1,5 +1,6 @@
 [GLOBAL]
 pants_version = "2.15.0"
+pants_global_pex_build_args = "--no-venv"
 
 backend_packages = [
   "pants.backend.python",
@@ -15,10 +16,8 @@ backend_packages = [
 [source]
 # The Python source root is the repo root. See https://pants.readme.io/docs/source-roots.
 root_patterns = [
-    "/matprisnu/src/python/",
-    "/matprisnu/src/python/scrappers/src",
-    "/matprisnu/src/python/data-models/src",
-    "/matprisnu/src/python/data-models/tests",
+    "src/python/scrappers",
+    "src/python/data-models",
 ]
 
 [python]
