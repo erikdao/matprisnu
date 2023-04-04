@@ -1,7 +1,7 @@
 python_sources(
     name="scrappers",
     sources=[
-        "scrappers/**/*.py",
+        "src/scrappers/**/*.py",
     ],
     dependencies=[
         "3rdparty/python#pydantic",
@@ -33,6 +33,6 @@ python_distribution(
 
 pex_binary(
     name="scrappers-cli",
-    entry_point="scrappers/cli.py:main",
-    dependencies=[":pyproject", ":scrappers", "src/python/data-models/src:data_models"],
+    entry_point="src/scrappers/cli.py:main",
+    dependencies=[":pyproject", ":scrappers", "src/python/data-models:data_models"],
 )

@@ -1,7 +1,7 @@
 python_sources(
     name="data_models",
     sources=[
-        "data_models/**/*.py",
+        "src/data_models/**/*.py",
     ],
     dependencies=["3rdparty/python#pydantic"],
 )
