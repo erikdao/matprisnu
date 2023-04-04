@@ -55,7 +55,7 @@ async def scrape_categories() -> Optional[List[Any]]:
     return json_decode(response.body)
 
 
-async def scrapping_function(storage_path: Path) -> None:
+async def scrapping_function(storage_path: Path, **kwargs) -> None:
     categories = await scrape_categories()
     logger.info(f"Got {len(categories)} categories")
 
