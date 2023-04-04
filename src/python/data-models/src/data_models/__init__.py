@@ -1,4 +1,4 @@
-from .scrappers import CoopAPICategory, AxfoodAPIProduct, IcaAPIStore, IcaAPICategory
+from .scrappers import AxfoodAPIProduct, CoopAPICategory, IcaAPICategory, IcaAPIStore
 
 __version__ = "0.1.0"
 
