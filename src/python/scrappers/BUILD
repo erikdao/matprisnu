@@ -35,4 +35,5 @@ pex_binary(
     name="scrappers-cli",
     entry_point="src/scrappers/cli.py:main",
     dependencies=[":pyproject", ":scrappers", "src/python/data-models:data_models"],
+    output_path="scrappers-cli.pex",
 )
