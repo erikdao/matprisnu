@@ -12,6 +12,7 @@ python_sources(
         "3rdparty/python#click",
         "3rdparty/python#sentry-sdk",
         "3rdparty/python#loguru",
+        "3rdparty/python#luigi",
     ],
 )
 
@@ -20,7 +21,6 @@ resource(name="pyproject", source="pyproject.toml")
 python_distribution(
     name="dist",
     dependencies=[
-        ":scrappers",
         ":pyproject",
     ],
     provides=python_artifact(

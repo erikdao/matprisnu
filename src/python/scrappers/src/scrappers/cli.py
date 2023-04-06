@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Union
 
 import click
+import luigi
 from data_models import AxfoodAPICategory, CoopAPICategory, IcaAPICategory, IcaAPIStore
 from scrappers.common import init_storage_dir
 from scrappers.logger import sentry_logger as logger
@@ -132,7 +133,9 @@ def products_cli():
     type=str,
     help="[ICA] ID of store to scrape",
 )
-def products_command(brand: str, output_path: str, categories_file: str, stores_file: str, store_id: str):
+def products_command(
+    brand: str, output_path: str, categories_file: str, stores_file: str, store_id: str
+):
     def run_axfood(
         brand: str, categories_file: Union[str, Path], storage_path: Union[str, Path]
     ):
@@ -169,9 +172,14 @@ def products_command(brand: str, output_path: str, categories_file: str, stores_
             loop = asyncio.get_event_loop()
             loop.run_until_complete(scrapping_function(category, storage_path))
 
-    def run_ica(categories_file: Union[str, Path], stores_file: Union[str, Path], store_id: str, storage_path: Union[str, Path]):
+    def run_ica(
+        categories_file: Union[str, Path],
+        stores_file: Union[str, Path],
+        store_id: str,
+        storage_path: Union[str, Path],
+    ):
         """Run ICA products scrapping.
-        
+
         ICA's products are scraped by each store. It is not recommended to use CLI to scrape all products for ICA. Instead use the tasks.
 
         Args:
@@ -183,7 +191,11 @@ def products_command(brand: str, output_path: str, categories_file: str, stores_
         # Get the store
         with open(stores_file, "r") as f:
             stores = json.load(f)
-        store = next(store for store in stores if store["storeId"] == store_id and store["onlinePlatform"] == "OSP")
+        store = next(
+            store
+            for store in stores
+            if store["storeId"] == store_id and store["onlinePlatform"] == "OSP"
+        )
         store = IcaAPIStore.parse_obj(store)
 
         # Read categories
@@ -191,7 +203,9 @@ def products_command(brand: str, output_path: str, categories_file: str, stores_
             data = json.load(f)
             # Only get the lowest level categories
             data = {k: v for k, v in data.items() if len(v["children"]) == 0}
-        categories = [IcaAPICategory.parse_obj(category) for _, category in data.items()]
+        categories = [
+            IcaAPICategory.parse_obj(category) for _, category in data.items()
+        ]
 
         module = importlib.import_module("scrappers.ica.products")
         scrapping_function = getattr(module, "scrapping_function")
@@ -211,8 +225,29 @@ def products_command(brand: str, output_path: str, categories_file: str, stores_
         run_axfood(brand, categories_file, storage_path)
 
 
+@click.group()
+def task_cli():
+    pass
+
+
+@task_cli.command("task")
+@click.argument("task", type=str)
+@click.option("--brand", type=str, help="Brand to scrape")
+@click.option(
+    "--output-path",
+    type=click.Path(),
+    default="data",
+    help="Path to output directory",
+)
+def task_command(task: str, brand: str, output_path: str):
+    module = importlib.import_module("scrappers.tasks")
+    TaskClass = getattr(module, task)
+
+    luigi.build([TaskClass(brand=brand, output_path=output_path)], workers=2)
+
+
 def main():
-    cli = click.CommandCollection(sources=[stores_cli, categories_cli, products_cli])
+    cli = click.CommandCollection(sources=[stores_cli, categories_cli, products_cli, task_cli])
     cli()
 
 
