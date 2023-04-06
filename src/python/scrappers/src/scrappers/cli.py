@@ -247,7 +247,9 @@ def task_command(task: str, brand: str, output_path: str):
 
 
 def main():
-    cli = click.CommandCollection(sources=[stores_cli, categories_cli, products_cli, task_cli])
+    cli = click.CommandCollection(
+        sources=[stores_cli, categories_cli, products_cli, task_cli]
+    )
     cli()
 
 
