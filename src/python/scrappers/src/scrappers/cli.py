@@ -146,7 +146,7 @@ def products_command(
         categories = [AxfoodAPICategory.parse_obj(category) for category in categories]
         logger.info(f"Got {len(categories)} categories for {brand}")
 
-        module = importlib.import_module(f"scrappers.axfood.products")
+        module = importlib.import_module("scrappers.axfood.products")
         scrapping_function = getattr(module, "scrapping_function")
 
         for category in categories:

@@ -110,9 +110,9 @@ async def scrapping_function(
     await q.join()
     assert fetching == (fetched | dead)
     logger.info(
-        f"Done in %d seconds, scrapped %d categories" % (time.time() - start, len(data))
+        "Done in %d seconds, scrapped %d categories" % (time.time() - start, len(data))
     )
-    logger.info(f"Unable to scrape %s categories" % (len(dead)))
+    logger.info("Unable to scrape %s categories" % (len(dead)))
 
     # Signal all the workers to exit.
     for _ in range(concurrency):
