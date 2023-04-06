@@ -29,6 +29,20 @@ class AxfoodAPIProduct(BaseModel):
         return f"AxfoodAPIProduct(code={self.code}, name={self.name})"
 
 
+class AxfoodAPICategory(BaseModel):
+    """Category model for Axfood API (i.e., Hemkop and Willys)."""
+
+    id: str
+    category: str
+    title: str
+    url: Optional[str] = None
+    valid: Optional[bool] = True
+    children: Optional[List["AxfoodAPICategory"]] = []
+
+    def __str__(self) -> str:
+        return f"AxfoodAPICategory(id={self.id}, url={self.url})"
+
+
 class IcaAPIStore(BaseModel):
     """Store model for ICA API."""
 

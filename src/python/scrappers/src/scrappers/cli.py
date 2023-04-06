@@ -6,8 +6,9 @@ from pathlib import Path
 from typing import Union
 
 import click
-from data_models import CoopAPICategory
+from data_models import AxfoodAPICategory, CoopAPICategory
 from scrappers.common import init_storage_dir
+from scrappers.logger import sentry_logger as logger
 
 
 @click.group()
@@ -127,6 +128,23 @@ def products_command(brand: str, output_path: str, categories_file: str):
         parent_path=output_path, dirname=brand, sub_dir="products"
     )
 
+    def run_axfood(
+        brand: str, categories_file: Union[str, Path], storage_path: Union[str, Path]
+    ):
+        """Run Axfood products scrapping (Hemköp and Willys)."""
+        # Read categories
+        with open(categories_file, "r") as f:
+            categories = json.load(f)
+        categories = [AxfoodAPICategory.parse_obj(category) for category in categories]
+        logger.info(f"Got {len(categories)} categories for {brand}")
+
+        module = importlib.import_module(f"scrappers.axfood.products")
+        scrapping_function = getattr(module, "scrapping_function")
+
+        for category in categories:
+            loop = asyncio.get_event_loop()
+            loop.run_until_complete(scrapping_function(brand, category, storage_path))
+
     def run_coop(categories_file: Union[str, Path], storage_path: Union[str, Path]):
         """Run Coop products scrapping."""
         # Read categories
@@ -154,24 +172,12 @@ def products_command(brand: str, output_path: str, categories_file: str):
         loop = asyncio.get_event_loop()
         loop.run_until_complete(scrapping_function(storage_path))
 
-    def run_axfood(brand: str, storage_path: Union[str, Path]):
-        """Run other brands products scrapping."""
-        if brand in ["willys", "hemkop"]:
-            brand_name = "axfood"
-        else:
-            brand_name = brand
-        module = importlib.import_module(f"scrappers.{brand_name}.products")
-        scrapping_function = getattr(module, "scrapping_function")
-
-        loop = asyncio.get_event_loop()
-        loop.run_until_complete(scrapping_function(storage_path, brand=brand))
-
     if brand == "coop":
         run_coop(categories_file, storage_path)
     elif brand == "ica":
         run_ica(storage_path)
     elif brand in ["willys", "hemkop"]:
-        run_axfood(brand, storage_path)
+        run_axfood(brand, categories_file, storage_path)
 
 
 def main():

@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
+from data_models import AxfoodAPICategory
 from scrappers.common import make_url
 from scrappers.data_lake import AsyncDataLakeConnector
 from scrappers.logger import sentry_logger as logger
@@ -51,12 +52,15 @@ async def scrape_category(brand: str, category: str) -> List[Any]:
     return products
 
 
-async def scrapping_function(brand: str, category: str, storage_path: Path):
+async def scrapping_function(
+    brand: str, category: AxfoodAPICategory, storage_path: Path
+):
     """Function to scrape products for a particular category."""
-    products = await scrape_category(category)
+    category_id = category.url
+    products = await scrape_category(brand, category_id)
     logger.info(f"Scrapped {len(products)} products for category. {category}")
 
-    json_file = storage_path / f"{category}.json"
+    json_file = storage_path / f"{category_id}.json"
     with open(json_file, "w") as f:
         json.dump(products, f, indent=2)
 
@@ -67,5 +71,5 @@ async def scrapping_function(brand: str, category: str, storage_path: Path):
         data=products,
         brand_name=brand,
         id_field="code",
-        brand_category=category,
+        brand_category=category_id,
     )
