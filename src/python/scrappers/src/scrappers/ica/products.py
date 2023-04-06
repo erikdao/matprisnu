@@ -83,7 +83,7 @@ async def scrapping_function(
             if category is None:
                 return
 
-            logger.debug(f"Scrapping products for category '{category.id}'")
+            logger.debug(f"Scrapping products for category '{category}'")
             params = dict(category=category.id, limit=1000, offset=0)
             base_url = root_url.format(accountNumber=store.accountNumber)
             url = make_url(base_url, params)

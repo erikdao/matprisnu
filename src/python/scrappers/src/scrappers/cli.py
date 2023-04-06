@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Union
 
 import click
-from data_models import AxfoodAPICategory, CoopAPICategory
+from data_models import AxfoodAPICategory, CoopAPICategory, IcaAPICategory, IcaAPIStore
 from scrappers.common import init_storage_dir
 from scrappers.logger import sentry_logger as logger
 
@@ -122,12 +122,17 @@ def products_cli():
     type=click.Path(exists=True),
     help="Path to categories file",
 )
-def products_command(brand: str, output_path: str, categories_file: str):
-    output_path = Path(output_path).resolve()
-    storage_path = init_storage_dir(
-        parent_path=output_path, dirname=brand, sub_dir="products"
-    )
-
+@click.option(
+    "--stores-file",
+    type=click.Path(exists=True),
+    help="[ICA] Path to stores file",
+)
+@click.option(
+    "--store-id",
+    type=str,
+    help="[ICA] ID of store to scrape",
+)
+def products_command(brand: str, output_path: str, categories_file: str, stores_file: str, store_id: str):
     def run_axfood(
         brand: str, categories_file: Union[str, Path], storage_path: Union[str, Path]
     ):
@@ -164,18 +169,44 @@ def products_command(brand: str, output_path: str, categories_file: str):
             loop = asyncio.get_event_loop()
             loop.run_until_complete(scrapping_function(category, storage_path))
 
-    def run_ica(storage_path: Union[str, Path]):
-        """Run ICA products scrapping."""
-        # TODO: Update this
+    def run_ica(categories_file: Union[str, Path], stores_file: Union[str, Path], store_id: str, storage_path: Union[str, Path]):
+        """Run ICA products scrapping.
+        
+        ICA's products are scraped by each store. It is not recommended to use CLI to scrape all products for ICA. Instead use the tasks.
+
+        Args:
+            categories_file (Union[str, Path]): Path to categories file.
+            stores_file (Union[str, Path]): Path to stores file.
+            store_id (str): ID of store to scrape.
+            storage_path (Union[str, Path]): Path to storage directory.
+        """
+        # Get the store
+        with open(stores_file, "r") as f:
+            stores = json.load(f)
+        store = next(store for store in stores if store["storeId"] == store_id and store["onlinePlatform"] == "OSP")
+        store = IcaAPIStore.parse_obj(store)
+
+        # Read categories
+        with open(categories_file, "r") as f:
+            data = json.load(f)
+            # Only get the lowest level categories
+            data = {k: v for k, v in data.items() if len(v["children"]) == 0}
+        categories = [IcaAPICategory.parse_obj(category) for _, category in data.items()]
+
         module = importlib.import_module("scrappers.ica.products")
         scrapping_function = getattr(module, "scrapping_function")
         loop = asyncio.get_event_loop()
-        loop.run_until_complete(scrapping_function(storage_path))
+        loop.run_until_complete(scrapping_function(store, categories, storage_path))
+
+    output_path = Path(output_path).resolve()
+    storage_path = init_storage_dir(
+        parent_path=output_path, dirname=brand, sub_dir="products"
+    )
 
     if brand == "coop":
         run_coop(categories_file, storage_path)
     elif brand == "ica":
-        run_ica(storage_path)
+        run_ica(categories_file, stores_file, store_id, storage_path)
     elif brand in ["willys", "hemkop"]:
         run_axfood(brand, categories_file, storage_path)
 
