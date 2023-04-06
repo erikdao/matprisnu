@@ -1,4 +1,4 @@
-"""Module to scrape Coop's products data."""
+"""Scrapeprs for Coop's products."""
 import asyncio
 import json
 import math
@@ -147,7 +147,10 @@ async def scrapping_function(category: CoopAPICategory, storage_path: Path) -> N
     """Main scrapping function for aggregating category's products and write
     them to JSON files."""
     products = await scrape_products(category_id=str(category.id))
-    logger.info(f"Scrapped {len(products)} products for category: {category.name}")
+    logger.info(f"Scrapped {len(products)} products for category: {category}")
+
+    if not len(products):
+        return
 
     # Write to json
     json_file = storage_path / f"{category.escapedName}.json"

@@ -14,6 +14,9 @@ class CoopAPICategory(BaseModel):
     hasChildren: bool = False
     parent: Optional[int]
 
+    def __str__(self) -> str:
+        return f"CoopAPICategory(id={self.id}, name={self.name})"
+
 
 class AxfoodAPIProduct(BaseModel):
     """Product model for Axfood API (i.e., Hemkop and Willys)."""
@@ -21,6 +24,9 @@ class AxfoodAPIProduct(BaseModel):
     code: str
     name: str
     price_value: float
+
+    def __str__(self) -> str:
+        return f"AxfoodAPIProduct(code={self.code}, name={self.name})"
 
 
 class IcaAPIStore(BaseModel):
@@ -36,6 +42,9 @@ class IcaAPIStore(BaseModel):
     onlineUrl: Optional[str] = None
     distanceInMeters: Optional[float] = None
 
+    def __str__(self) -> str:
+        return f"IcaAPIStore(storeId={self.storeId}, storeName={self.storeName})"
+
 
 class IcaAPICategory(BaseModel):
     """Category model for ICA API."""
@@ -46,3 +55,6 @@ class IcaAPICategory(BaseModel):
     fullURLPath: Optional[str] = None
     children: Optional[List[str]] = []
     products: Optional[List[Any]] = None
+
+    def __str__(self) -> str:
+        return f"IcaAPICategory(id={self.id}, name={self.name})"
