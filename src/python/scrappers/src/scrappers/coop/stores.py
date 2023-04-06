@@ -31,7 +31,7 @@ async def scrape_stores() -> Optional[List[Any]]:
     return json_decode(response.body)
 
 
-async def scrapping_function(storage_path: Path) -> None:
+async def scrapping_function(storage_path: Path, **kwargs) -> None:
     """Stores scrapper function.
 
     Args:

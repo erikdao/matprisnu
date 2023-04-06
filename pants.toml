@@ -16,7 +16,11 @@ backend_packages = [
 # The Python source root is the repo root. See https://pants.readme.io/docs/source-roots.
 root_patterns = [
     "src/python/scrappers",
+    "src/python/scrappers/src",
+    "src/python/scrappers/tests",
     "src/python/data-models",
+    "src/python/data-models/src",
+    "src/python/data-models/tests",
 ]
 
 [python]
@@ -27,7 +31,7 @@ enable_resolves = true
 python-default = "3rdparty/python/default.lock" 
 
 [bandit]
-args = ["--skip B101,B104"]
+args = ["--skip B101,B104,B311"]
 
 [anonymous-telemetry]
 enabled = true

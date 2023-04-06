@@ -3,7 +3,6 @@ name = "data-models"
 version = "0.1.0"
 description = "Data models for matprisnu"
 authors = ["Erik Dao <cuong@neuraltalks.io>"]
-readme = "README.md"
 packages = [{include = "data_models", from = "src"}]
 classifiers = [
     "Intended Audience :: Developers",

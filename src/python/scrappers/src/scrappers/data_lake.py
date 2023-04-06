@@ -14,7 +14,7 @@ load_dotenv(os.path.join(os.getcwd(), ".env"))
 
 def build_conn_string() -> str:
     env = os.getenv("ENVIRONMENT")
-    remote = True if env != "development" else False
+    remote = True if env == "production" else False
     if not remote:
         username = os.getenv("DEV_MONGODB_USERNAME")
         password = os.getenv("DEV_MONGODB_PASSWORD")

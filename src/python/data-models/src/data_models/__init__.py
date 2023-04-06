@@ -1,12 +1,16 @@
-from importlib.metadata import version
+from .scrappers import (
+    AxfoodAPICategory,
+    AxfoodAPIProduct,
+    CoopAPICategory,
+    IcaAPICategory,
+    IcaAPIStore,
+)
 
-from .scrappers import (AxfoodAPIProduct, CoopAPICategory, IcaAPICategory,
-                        IcaAPIStore)
-
-__version__ = version("data-models")
+__version__ = "0.1.0"
 
 __all__ = [
     "CoopAPICategory",
+    "AxfoodAPICategory",
     "AxfoodAPIProduct",
     "IcaAPIStore",
     "IcaAPICategory",

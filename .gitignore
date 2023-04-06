@@ -5,5 +5,13 @@
 .env
 .venv
 
+*.pyc
+__pycache__
+
 dist/
 *.egg-info
+
+# Local data directory
+data/
+
+.vscode/
