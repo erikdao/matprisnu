@@ -2,6 +2,11 @@ version: '3.8'
 
 volumes:
   mongodb:
+    driver: local
+    driver_opts:
+      o: "size=64G"
+      device: tmpfs
+      type: tmpfs
   postgresql:
 
 services:
