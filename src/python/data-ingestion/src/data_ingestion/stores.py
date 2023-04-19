@@ -1,57 +1,12 @@
-"""Ingest store data"""
+"""Ingest store data."""
 import os
-
 from datetime import datetime
-from dotenv import load_dotenv
-from urllib.parse import urlparse
 
 import polars as pl
-from psycopg2 import sql
-import psycopg2.extras
+from data_ingestion.utils import write_to_db
+from dotenv import load_dotenv
 
 load_dotenv(os.path.join(os.getcwd(), ".env"))
-
-
-def write_to_db(df: pl.DataFrame, table_name: str):
-    # first we convert polars date64 representation to python datetime objects 
-    for col in df:
-        # only for date64
-        if col.dtype == pl.Date:
-            df = df.with_columns(col.dt.to_python_datetime())
-
-    # create sql identifiers for the column names
-    # we do this to safely insert this into a sql query
-    columns = sql.SQL(",").join(sql.Identifier(name) for name in df.columns)
-
-    # create placeholders for the values. These will be filled later
-    values = sql.SQL(",").join([sql.Placeholder() for _ in df.columns])
-
-    # prepare the insert query
-    insert_stmt = sql.SQL("INSERT INTO {} ({}) VALUES({});").format(
-        sql.Identifier(table_name), columns, values
-    )
-
-    # make a connection
-    postgres_uri = urlparse(os.getenv("POSTGRES_WAREHOUSE_SILVER_URI"))
-    username = postgres_uri.username
-    password = postgres_uri.password
-    database = postgres_uri.path[1:]
-    hostname = postgres_uri.hostname
-    port = postgres_uri.port
-    conn = psycopg2.connect(
-        database=database,
-        user=username,
-        password=password,
-        host=hostname,
-        port=port
-    )
-    cur = conn.cursor()
-
-    # do the insert
-    psycopg2.extras.execute_batch(cur, insert_stmt, df.rows())
-    conn.commit()
-
-    conn.close()
 
 
 def ingest_coop_stores(json_file: str, date: str):
@@ -59,7 +14,7 @@ def ingest_coop_stores(json_file: str, date: str):
 
     scrapped_date = datetime.strptime(date, "%Y-%m-%d")
     df = df.with_columns((pl.lit(scrapped_date, dtype=pl.Date).alias("scrapped_date")))
-    
+
     conn = os.getenv("POSTGRES_WAREHOUSE_SILVER_URI")
     df.write_database("coop_stores", conn, if_exists="append")
 
@@ -96,11 +51,11 @@ def ingest_axfood_stores(brand: str, json_file: str, date: str):
 
     scrapped_date = datetime.strptime(date, "%Y-%m-%d")
     df = df.with_columns((pl.lit(scrapped_date, dtype=pl.Date).alias("scrapped_date")))
-    
+
     write_to_db(df, table_name=f"{brand}_stores")
 
 
-def ingest_ica_stores(brand: str, json_file: str, date: str):
+def ingest_ica_stores(json_file: str, date: str):
     def flatten_df(df: pl.DataFrame) -> pl.DataFrame:
         # Flatten the address column by first createing a new dataframe with the unnested column
         address_df = df.select(["storeId", "address"])
@@ -128,17 +83,5 @@ def ingest_ica_stores(brand: str, json_file: str, date: str):
 
     scrapped_date = datetime.strptime(date, "%Y-%m-%d")
     df = df.with_columns((pl.lit(scrapped_date, dtype=pl.Date).alias("scrapped_date")))
-    
+
     write_to_db(df, table_name="ica_stores")
-
-
-if __name__ == "__main__":
-    import argparse
-
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--brand", type=str, required=True)
-    parser.add_argument("--json-file", type=str, required=True)
-    parser.add_argument("--date", type=str, required=True)
-    args = parser.parse_args()
-
-    ingest_ica_stores(args.brand, args.json_file, args.date)

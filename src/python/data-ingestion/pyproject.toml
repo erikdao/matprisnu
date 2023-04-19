@@ -11,7 +11,11 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = "^3.9"
-pydantic = "^1.10.0"
+polars = "^0.17.5"
+pyarrow = "^11.0.0"
+sqlalchemy = "^2.0.9"
+pandas = "^2.0.0"
+psycopg2-binar = "^2.9.6"
 
 [tool.semantic_release]
 branch = "main"
