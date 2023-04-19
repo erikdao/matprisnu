@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "data-ingestion"
+version = "0.1.0"
+description = "Pipeline to ingest data from scrappers to RDS"
+authors = ["Erik Dao <cuong@neuraltalks.io>"]
+packages = [{include = "data_ingestion", from = "src"}]
+classifiers = [
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3.9",
+]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+pydantic = "^1.10.0"
+
+[tool.semantic_release]
+branch = "main"
+version_variable = "src/data_ingestion/__init__.py:__version__"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
