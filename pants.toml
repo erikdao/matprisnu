@@ -21,6 +21,9 @@ root_patterns = [
     "src/python/data-models",
     "src/python/data-models/src",
     "src/python/data-models/tests",
+    "src/python/data-ingestion",
+    "src/python/data-ingestion/src",
+    "src/python/data-ingestion/tests",
 ]
 
 [python]

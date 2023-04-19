@@ -137,7 +137,7 @@ class AxfoodTask(ScrappingTask):
     brand = luigi.Parameter()
 
     def get_scrapping_function(self, for_module: str):
-        module = importlib.import_module(f"scrapper.axfood.{for_module}")
+        module = importlib.import_module(f"scrappers.axfood.{for_module}")
         return getattr(module, "scrapping_function")
 
 
@@ -150,7 +150,7 @@ class AxfoodStoreScrappingTask(AxfoodTask):
         storage_path = self.setup_storage_path("stores")
 
         loop = asyncio.get_event_loop()
-        loop.run_until_complete(scrapping_function(storage_path))
+        loop.run_until_complete(scrapping_function(storage_path, brand=self.brand))
 
     def output(self):
         return luigi.LocalTarget(f"{self.common_output_dir}/stores/stores.json")
@@ -165,7 +165,7 @@ class AxfoodCategoryScrappingTask(AxfoodTask):
         storage_path = self.setup_storage_path("categories")
 
         loop = asyncio.get_event_loop()
-        loop.run_until_complete(scrapping_function(storage_path))
+        loop.run_until_complete(scrapping_function(storage_path, brand=self.brand))
 
     def output(self):
         return luigi.LocalTarget(f"{self.common_output_dir}/categories/categories.json")
@@ -182,7 +182,11 @@ class AxfoodCategoryProductScrappingTask(AxfoodTask):
         storage_path = self.setup_storage_path("products")
 
         loop = asyncio.get_event_loop()
-        loop.run_until_complete(scrapping_function(str(self.category), storage_path))
+        loop.run_until_complete(
+            scrapping_function(
+                brand=self.brand, category=str(self.category), storage_path=storage_path
+            )
+        )
 
     def output(self):
         return luigi.LocalTarget(
