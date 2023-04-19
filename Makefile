@@ -7,7 +7,7 @@ SCRAPPER_PEX=$(DIST_DIR)$(SCRAPPER_PEX_FILE)
 all: clean build
 
 clean:
-	rm -rf $(DIST_DIR)
+	rm -rf $(DIST_DIR)$(SCRAPPER_PEX_FILE)
 
 build:
 	pants package $(SCRAPPER_TARGET)
