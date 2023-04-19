@@ -2,7 +2,7 @@
 import asyncio
 import json
 from pathlib import Path
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Tuple, Union
 
 from data_models import AxfoodAPICategory
 from scrappers.common import make_url
@@ -53,10 +53,13 @@ async def scrape_category(brand: str, category: str) -> List[Any]:
 
 
 async def scrapping_function(
-    brand: str, category: AxfoodAPICategory, storage_path: Path
+    brand: str, category: Union[AxfoodAPICategory, str], storage_path: Path
 ):
     """Function to scrape products for a particular category."""
-    category_id = category.url
+    if isinstance(category, AxfoodAPICategory):
+        category_id = category.url
+    else:
+        category_id = category
     products = await scrape_category(brand, category_id)
     logger.info(f"Scrapped {len(products)} products for category. {category}")
 
