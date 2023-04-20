@@ -3,7 +3,10 @@ from urllib.parse import urlparse
 
 import polars as pl
 import psycopg2.extras
+from dotenv import load_dotenv
 from psycopg2 import sql
+
+load_dotenv(os.path.join(os.getcwd(), ".env"))
 
 
 def write_to_db(df: pl.DataFrame, table_name: str):
