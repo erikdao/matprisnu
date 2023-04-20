@@ -36,35 +36,46 @@ def ingest_ica_categories(json_file: str, date: str):
     write_to_db(df, table_name="ica_categories")
 
 
-def _parse_axfood_categories(data: Any) -> List[Dict[str, Any]]:
-    if len(data["children"]) == 0:
-        return data
-
-    items = []
-    data["children_id"] = [child["id"] for child in data["children"]]
-
-    for child in data["children"]:
-        items.append(_parse_axfood_categories(child))
-
-    return items
-
-
-def _flatten(lst: List[Any]) -> List[Any]:
-    flattened = []
-    for item in lst:
-        if isinstance(item, list):
-            flattened.extend(_flatten(item))
-        else:
-            flattened.append(item)
-    return flattened
-
-
 def _get_flattend_axfood_categories(json_file: str) -> List[Dict[str, Any]]:
+    """Get flattend categories from Axfood JSON file."""
     with open(json_file, "r") as f:
         data = json.load(f)
+
+    # Top level categories
     categories = []
     for item in data:
-        categories.extend(_flatten(_parse_axfood_categories(item)))
+        if len(item["children"]) == 0:
+            del item["children"]
+            item["parent"] = None  # Top level categories have no parent
+            item["level"] = 1
+            categories.append(item)
+            continue
+
+        # Second level categories
+        for child in item["children"]:
+            child["parent"] = item["id"]
+            if len(child["children"]) == 0:
+                del child["children"]
+                child["level"] = 2
+                categories.append(child)
+                continue
+
+            # Third level categories
+            for grandchild in child["children"]:
+                grandchild["parent"] = child["id"]
+                del grandchild["children"]  # No grandchildren
+                grandchild["level"] = 3
+                categories.append(grandchild)
+
+            del child["children"]  # Remove children from second level
+            child["level"] = 2
+            categories.append(child)
+
+        del item["children"]  # Remove children from top level
+        item["parent"] = None  # Top level categories have no parent
+        item["level"] = 1
+        categories.append(item)
+
     return categories
 
 

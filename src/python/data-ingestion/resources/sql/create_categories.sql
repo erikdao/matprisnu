@@ -34,7 +34,8 @@ CREATE TABLE IF NOT EXISTS hemkop_categories (
     "category" VARCHAR(255),
     "url" VARCHAR(255),
     "valid" BOOLEAN,
-    "children" VARCHAR(255)[]
+    "parent" VARCHAR(255),
+    "level" SMALLINT
 );
 
 CREATE TABLE IF NOT EXISTS willys_categories (
@@ -46,5 +47,6 @@ CREATE TABLE IF NOT EXISTS willys_categories (
     "category" VARCHAR(255),
     "url" VARCHAR(255),
     "valid" BOOLEAN,
-    "children" VARCHAR(255)[]
+    "parent" VARCHAR(255),
+    "level" SMALLINT
 );
