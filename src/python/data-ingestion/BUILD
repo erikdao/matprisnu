@@ -9,6 +9,8 @@ python_sources(
         "3rdparty/python#sqlalchemy",
         "3rdparty/python#pandas",
         "3rdparty/python#psycopg2-binary",
+        "3rdparty/python#loguru",
+        "3rdparty/python#genson",
     ],
 )
 

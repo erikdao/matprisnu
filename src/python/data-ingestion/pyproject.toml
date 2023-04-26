@@ -16,6 +16,8 @@ pyarrow = "^11.0.0"
 sqlalchemy = "^2.0.9"
 pandas = "^2.0.0"
 psycopg2-binary = "^2.9.6"
+loguru = "^0.6.0"
+genson = "^1.2.2"
 
 [tool.semantic_release]
 branch = "main"
