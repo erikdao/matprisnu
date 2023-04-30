@@ -1,12 +1,7 @@
 version: '3.8'
 
 volumes:
-  mongodb:
-    driver: local
-    driver_opts:
-      o: "size=64G"
-      device: tmpfs
-      type: tmpfs
+  couchdb:
   postgresql:
 
 services:
@@ -14,21 +9,19 @@ services:
     image: postgres:latest
     container_name: postgresql-server
     ports:
-      - 5432:5432
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - "5432:5432"
+    env_file:
+      - .env
     volumes:
       - postgresql:/var/lib/postgresql/data
     
-  mongodb:
-    image: mongo:latest
-    container_name: mongodb-server
-    hostname: mongodb-docker.local
+  couchserver:
+    image: couchdb
+    container_name: couch-server
+    hostname: couchdb-docker.local
     ports:
-      - "27017:27017"
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: rootpassword
+      - "5984:5984"
+    env_file:
+      - .env
     volumes:
-      - mongodb:/data/db
+      - couchdb:/opt/couchdb/data
