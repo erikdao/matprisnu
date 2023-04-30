@@ -1,0 +1,231 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "properties": {
+    "potentialPromotions": {
+      "type": "array"
+    },
+    "priceValue": {
+      "type": "number"
+    },
+    "price": {
+      "type": "string"
+    },
+    "depositPrice": {
+      "type": "string"
+    },
+    "averageWeight": {
+      "type": "null"
+    },
+    "comparePrice": {
+      "type": "string"
+    },
+    "comparePriceUnit": {
+      "type": "string"
+    },
+    "isDrugProduct": {
+      "type": "boolean"
+    },
+    "solrSearchScore": {
+      "type": "number"
+    },
+    "energyDeclaration": {
+      "type": "null"
+    },
+    "image": {
+      "type": "object",
+      "properties": {
+        "imageType": {
+          "type": "string"
+        },
+        "format": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "altText": {
+          "type": "null"
+        },
+        "galleryIndex": {
+          "type": "null"
+        },
+        "width": {
+          "type": "null"
+        }
+      },
+      "required": [
+        "altText",
+        "format",
+        "galleryIndex",
+        "imageType",
+        "url",
+        "width"
+      ]
+    },
+    "ranking": {
+      "type": "number"
+    },
+    "newsSplashProduct": {
+      "type": "boolean"
+    },
+    "notAllowedB2b": {
+      "type": "boolean"
+    },
+    "notAllowedAnonymous": {
+      "type": "boolean"
+    },
+    "productLine2": {
+      "type": "string"
+    },
+    "pickupProductLine2": {
+      "type": "string"
+    },
+    "priceUnit": {
+      "type": "string"
+    },
+    "priceNoUnit": {
+      "type": "string"
+    },
+    "savingsAmount": {
+      "type": "null"
+    },
+    "googleAnalyticsCategory": {
+      "type": "string"
+    },
+    "gdprTrackingIncompliant": {
+      "type": "boolean"
+    },
+    "showGoodPriceIcon": {
+      "type": "boolean"
+    },
+    "nicotineMedicalProduct": {
+      "type": "boolean"
+    },
+    "tobaccoFreeNicotineProduct": {
+      "type": "boolean"
+    },
+    "nonEkoProduct": {
+      "type": "boolean"
+    },
+    "tobaccoProduct": {
+      "type": "boolean"
+    },
+    "labels": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "manufacturer": {
+      "type": "string"
+    },
+    "incrementValue": {
+      "type": "number"
+    },
+    "productBasketType": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "type"
+      ]
+    },
+    "thumbnail": {
+      "type": "object",
+      "properties": {
+        "imageType": {
+          "type": "string"
+        },
+        "format": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "altText": {
+          "type": "null"
+        },
+        "galleryIndex": {
+          "type": "null"
+        },
+        "width": {
+          "type": "null"
+        }
+      },
+      "required": [
+        "altText",
+        "format",
+        "galleryIndex",
+        "imageType",
+        "url",
+        "width"
+      ]
+    },
+    "outOfStock": {
+      "type": "boolean"
+    },
+    "online": {
+      "type": "boolean"
+    },
+    "displayVolume": {
+      "type": "string"
+    },
+    "addToCartDisabled": {
+      "type": "boolean"
+    },
+    "code": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "addToCartDisabled",
+    "averageWeight",
+    "code",
+    "comparePrice",
+    "comparePriceUnit",
+    "depositPrice",
+    "displayVolume",
+    "energyDeclaration",
+    "gdprTrackingIncompliant",
+    "googleAnalyticsCategory",
+    "image",
+    "incrementValue",
+    "isDrugProduct",
+    "labels",
+    "manufacturer",
+    "name",
+    "newsSplashProduct",
+    "nicotineMedicalProduct",
+    "nonEkoProduct",
+    "notAllowedAnonymous",
+    "notAllowedB2b",
+    "online",
+    "outOfStock",
+    "pickupProductLine2",
+    "potentialPromotions",
+    "price",
+    "priceNoUnit",
+    "priceUnit",
+    "priceValue",
+    "productBasketType",
+    "productLine2",
+    "ranking",
+    "savingsAmount",
+    "showGoodPriceIcon",
+    "solrSearchScore",
+    "thumbnail",
+    "tobaccoFreeNicotineProduct",
+    "tobaccoProduct"
+  ]
+}

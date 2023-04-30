@@ -15,3 +15,6 @@ dist/
 data/
 
 .vscode/
+
+# Jupyter Notebooks
+.ipynb_checkpoints/

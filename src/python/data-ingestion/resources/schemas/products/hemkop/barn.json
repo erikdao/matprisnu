@@ -1,0 +1,401 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "properties": {
+    "potentialPromotions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "applied": {
+            "type": "boolean"
+          },
+          "campaignType": {
+            "type": "string"
+          },
+          "promotionTheme": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "visible": {
+                "type": "null"
+              }
+            },
+            "required": [
+              "code",
+              "visible"
+            ]
+          },
+          "textLabelGenerated": {
+            "type": "string"
+          },
+          "textLabelManual": {
+            "type": "null"
+          },
+          "price": {
+            "type": "object",
+            "properties": {
+              "currencyIso": {
+                "type": "string"
+              },
+              "value": {
+                "type": "number"
+              },
+              "priceType": {
+                "type": "string"
+              },
+              "formattedValue": {
+                "type": "string"
+              },
+              "minQuantity": {
+                "type": "null"
+              },
+              "maxQuantity": {
+                "type": "null"
+              }
+            },
+            "required": [
+              "currencyIso",
+              "formattedValue",
+              "maxQuantity",
+              "minQuantity",
+              "priceType",
+              "value"
+            ]
+          },
+          "productCodes": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ]
+          },
+          "promotionType": {
+            "type": "string"
+          },
+          "comparePrice": {
+            "type": "string"
+          },
+          "conditionLabel": {
+            "type": "string"
+          },
+          "rewardLabel": {
+            "type": "string"
+          },
+          "redeemLimitLabel": {
+            "type": "string"
+          },
+          "cartLabel": {
+            "type": "null"
+          },
+          "validUntil": {
+            "type": "null"
+          },
+          "timesUsed": {
+            "type": "null"
+          },
+          "qualifyingCount": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "splashTitleText": {
+            "type": "string"
+          },
+          "realMixAndMatch": {
+            "type": "boolean"
+          },
+          "mainProductCode": {
+            "type": "string"
+          },
+          "conditionLabelFormatted": {
+            "type": "string"
+          },
+          "promotionRedeemLimit": {
+            "type": "null"
+          },
+          "promotionPercentage": {
+            "type": "null"
+          },
+          "cartLabelFormatted": {
+            "type": "string"
+          },
+          "threshold": {
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "code": {
+            "type": "string"
+          },
+          "priority": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "applied",
+          "campaignType",
+          "cartLabel",
+          "cartLabelFormatted",
+          "code",
+          "comparePrice",
+          "conditionLabel",
+          "conditionLabelFormatted",
+          "mainProductCode",
+          "price",
+          "priority",
+          "productCodes",
+          "promotionPercentage",
+          "promotionRedeemLimit",
+          "promotionTheme",
+          "promotionType",
+          "qualifyingCount",
+          "realMixAndMatch",
+          "redeemLimitLabel",
+          "rewardLabel",
+          "splashTitleText",
+          "textLabelGenerated",
+          "textLabelManual",
+          "threshold",
+          "timesUsed",
+          "validUntil"
+        ]
+      }
+    },
+    "priceValue": {
+      "type": "number"
+    },
+    "price": {
+      "type": "string"
+    },
+    "depositPrice": {
+      "type": "string"
+    },
+    "averageWeight": {
+      "type": "null"
+    },
+    "comparePrice": {
+      "type": "string"
+    },
+    "comparePriceUnit": {
+      "type": "string"
+    },
+    "isDrugProduct": {
+      "type": "boolean"
+    },
+    "solrSearchScore": {
+      "type": "number"
+    },
+    "energyDeclaration": {
+      "type": "null"
+    },
+    "image": {
+      "type": "object",
+      "properties": {
+        "imageType": {
+          "type": "string"
+        },
+        "format": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "altText": {
+          "type": "null"
+        },
+        "galleryIndex": {
+          "type": "null"
+        },
+        "width": {
+          "type": "null"
+        }
+      },
+      "required": [
+        "altText",
+        "format",
+        "galleryIndex",
+        "imageType",
+        "url",
+        "width"
+      ]
+    },
+    "ranking": {
+      "type": "number"
+    },
+    "newsSplashProduct": {
+      "type": "boolean"
+    },
+    "notAllowedB2b": {
+      "type": "boolean"
+    },
+    "notAllowedAnonymous": {
+      "type": "boolean"
+    },
+    "productLine2": {
+      "type": "string"
+    },
+    "pickupProductLine2": {
+      "type": "string"
+    },
+    "priceUnit": {
+      "type": "string"
+    },
+    "priceNoUnit": {
+      "type": "string"
+    },
+    "savingsAmount": {
+      "type": [
+        "null",
+        "number"
+      ]
+    },
+    "googleAnalyticsCategory": {
+      "type": "string"
+    },
+    "gdprTrackingIncompliant": {
+      "type": "boolean"
+    },
+    "showGoodPriceIcon": {
+      "type": "boolean"
+    },
+    "nicotineMedicalProduct": {
+      "type": "boolean"
+    },
+    "tobaccoFreeNicotineProduct": {
+      "type": "boolean"
+    },
+    "nonEkoProduct": {
+      "type": "boolean"
+    },
+    "tobaccoProduct": {
+      "type": "boolean"
+    },
+    "labels": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "manufacturer": {
+      "type": "string"
+    },
+    "incrementValue": {
+      "type": "number"
+    },
+    "productBasketType": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "type"
+      ]
+    },
+    "thumbnail": {
+      "type": "object",
+      "properties": {
+        "imageType": {
+          "type": "string"
+        },
+        "format": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "altText": {
+          "type": "null"
+        },
+        "galleryIndex": {
+          "type": "null"
+        },
+        "width": {
+          "type": "null"
+        }
+      },
+      "required": [
+        "altText",
+        "format",
+        "galleryIndex",
+        "imageType",
+        "url",
+        "width"
+      ]
+    },
+    "outOfStock": {
+      "type": "boolean"
+    },
+    "online": {
+      "type": "boolean"
+    },
+    "displayVolume": {
+      "type": "string"
+    },
+    "addToCartDisabled": {
+      "type": "boolean"
+    },
+    "code": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "addToCartDisabled",
+    "averageWeight",
+    "code",
+    "comparePrice",
+    "comparePriceUnit",
+    "depositPrice",
+    "displayVolume",
+    "energyDeclaration",
+    "gdprTrackingIncompliant",
+    "googleAnalyticsCategory",
+    "image",
+    "incrementValue",
+    "isDrugProduct",
+    "labels",
+    "manufacturer",
+    "name",
+    "newsSplashProduct",
+    "nicotineMedicalProduct",
+    "nonEkoProduct",
+    "notAllowedAnonymous",
+    "notAllowedB2b",
+    "online",
+    "outOfStock",
+    "pickupProductLine2",
+    "potentialPromotions",
+    "price",
+    "priceNoUnit",
+    "priceUnit",
+    "priceValue",
+    "productBasketType",
+    "productLine2",
+    "ranking",
+    "savingsAmount",
+    "showGoodPriceIcon",
+    "solrSearchScore",
+    "thumbnail",
+    "tobaccoFreeNicotineProduct",
+    "tobaccoProduct"
+  ]
+}

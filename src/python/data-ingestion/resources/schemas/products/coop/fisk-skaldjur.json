@@ -1,0 +1,564 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string"
+    },
+    "ean": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "manufacturerName": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "imageUrl": {
+      "type": "string"
+    },
+    "listOfIngredients": {
+      "type": "string"
+    },
+    "navCategories": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "superCategories": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "superCategories": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "code": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "superCategories": {
+                        "type": "array"
+                      }
+                    },
+                    "required": [
+                      "code",
+                      "name",
+                      "superCategories"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "code",
+                "name",
+                "superCategories"
+              ]
+            }
+          }
+        },
+        "required": [
+          "code",
+          "name",
+          "superCategories"
+        ]
+      }
+    },
+    "accreditedTags": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "imageUrl": {
+            "type": "string"
+          },
+          "priority": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "code"
+        ]
+      }
+    },
+    "consumerInformationText": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "maxStorageTemperature": {
+      "type": "string"
+    },
+    "packageSize": {
+      "type": "number"
+    },
+    "packageSizeInformation": {
+      "type": "string"
+    },
+    "packageSizeUnit": {
+      "type": "string"
+    },
+    "salesPrice": {
+      "type": "number"
+    },
+    "salesPriceData": {
+      "type": "object",
+      "properties": {
+        "b2cPrice": {
+          "type": "number"
+        },
+        "b2bPrice": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "b2bPrice",
+        "b2cPrice"
+      ]
+    },
+    "piecePrice": {
+      "type": "number"
+    },
+    "piecePriceData": {
+      "type": "object",
+      "properties": {
+        "b2cPrice": {
+          "type": "number"
+        },
+        "b2bPrice": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "b2bPrice",
+        "b2cPrice"
+      ]
+    },
+    "salesUnit": {
+      "type": "string"
+    },
+    "comparativePriceText": {
+      "type": "string"
+    },
+    "comparativePrice": {
+      "type": "number"
+    },
+    "comparativePriceData": {
+      "type": "object",
+      "properties": {
+        "b2cPrice": {
+          "type": "number"
+        },
+        "b2bPrice": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "b2bPrice",
+        "b2cPrice"
+      ]
+    },
+    "articleSold": {
+      "type": "boolean"
+    },
+    "deposit": {
+      "type": "number"
+    },
+    "depositData": {
+      "type": "object",
+      "properties": {
+        "b2cPrice": {
+          "type": "number"
+        },
+        "b2bPrice": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "b2bPrice",
+        "b2cPrice"
+      ]
+    },
+    "vat": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "value": {
+          "type": "number"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "type",
+        "value"
+      ]
+    },
+    "nutrientLinks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "description": {
+            "type": "string"
+          },
+          "unit": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "description"
+        ]
+      }
+    },
+    "animalFoodData": {
+      "type": "object"
+    },
+    "fromSweden": {
+      "type": "boolean"
+    },
+    "availableOnline": {
+      "type": "boolean"
+    },
+    "countryOfOriginCodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "value"
+        ]
+      }
+    },
+    "consumerInstructions": {
+      "type": "object",
+      "properties": {
+        "storageInstructions": {
+          "type": "string"
+        },
+        "usageInstructions": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "storageInstructions"
+      ]
+    },
+    "shortTradeItemMarketingMessage": {
+      "type": "object",
+      "properties": {
+        "seq1": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "seq1"
+      ]
+    },
+    "preparationInstructions": {
+      "type": "string"
+    },
+    "isMagazine": {
+      "type": "boolean"
+    },
+    "nutrientBasis": {
+      "type": "object",
+      "properties": {
+        "quantity": {
+          "type": "number"
+        }
+      }
+    },
+    "declarationOfOrigin": {
+      "type": "string"
+    },
+    "healthClaimDescription": {
+      "type": "string"
+    },
+    "pieceWeight": {
+      "type": "number"
+    },
+    "onlinePromotions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          },
+          "priceData": {
+            "type": "object",
+            "properties": {
+              "b2cPrice": {
+                "type": "number"
+              },
+              "b2bPrice": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "b2bPrice",
+              "b2cPrice"
+            ]
+          },
+          "startDate": {
+            "type": "string"
+          },
+          "endDate": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "numberOfProductRequired": {
+            "type": "integer"
+          },
+          "medMeraRequired": {
+            "type": "boolean"
+          },
+          "priority": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "endDate",
+          "id",
+          "medMeraRequired",
+          "message",
+          "numberOfProductRequired",
+          "price",
+          "priceData",
+          "priority",
+          "startDate",
+          "type"
+        ]
+      }
+    },
+    "allergyInfo": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code"
+        ]
+      }
+    },
+    "newItem": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "imageUrl": {
+          "type": "string"
+        },
+        "priority": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "code",
+        "description",
+        "imageUrl",
+        "priority"
+      ]
+    },
+    "productionMethodForFishAndSeafoodCode": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "value"
+      ]
+    },
+    "speciesForFisheryData": {
+      "type": "object",
+      "properties": {
+        "statisticsPurposesCode": {
+          "type": "string"
+        },
+        "statisticsPurposesName": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "statisticsPurposesName"
+      ]
+    },
+    "compulsoryAdditiveLabelInformation": {
+      "type": "string"
+    },
+    "storageStateCode": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "value"
+      ]
+    },
+    "catchData": {
+      "type": "object",
+      "properties": {
+        "catchMethod": {
+          "type": "string"
+        },
+        "catchArea": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "catchArea",
+        "catchMethod"
+      ]
+    },
+    "variances": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "number"
+          },
+          "unit": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          },
+          "priceData": {
+            "type": "object",
+            "properties": {
+              "b2cPrice": {
+                "type": "number"
+              },
+              "b2bPrice": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "b2bPrice",
+              "b2cPrice"
+            ]
+          }
+        },
+        "required": [
+          "code",
+          "name",
+          "price",
+          "priceData",
+          "quantity",
+          "unit"
+        ]
+      }
+    }
+  },
+  "required": [
+    "animalFoodData",
+    "articleSold",
+    "availableOnline",
+    "comparativePrice",
+    "comparativePriceData",
+    "comparativePriceText",
+    "deposit",
+    "depositData",
+    "ean",
+    "fromSweden",
+    "id",
+    "imageUrl",
+    "manufacturerName",
+    "name",
+    "navCategories",
+    "nutrientBasis",
+    "packageSize",
+    "packageSizeInformation",
+    "packageSizeUnit",
+    "piecePrice",
+    "piecePriceData",
+    "salesPrice",
+    "salesPriceData",
+    "salesUnit",
+    "type",
+    "vat"
+  ]
+}
