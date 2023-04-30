@@ -9,6 +9,9 @@ MatPrisNu is a set of services and jobs that are responsible for collecting groc
 
 ## Development Logs
 
+**April 30, 2023**
+- After some considerations, we switched to CouchDB as the main document database for the scrappers. Its views and design documents seem to be promising for analytics as well.
+
 **April 29, 2023**
 - Restart the development of the project. Right now the main task is to ingest the scrapped data (in JSON files) into PostgreSQL for more in-depth analysis.
 

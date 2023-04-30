@@ -13,6 +13,9 @@ python_sources(
         "3rdparty/python#sentry-sdk",
         "3rdparty/python#loguru",
         "3rdparty/python#luigi",
+        "3rdparty/python#couchdb",
+        "3rdparty/python#genson",
+        "3rdparty/python#boto3",
     ],
 )
 
@@ -21,14 +24,16 @@ resource(name="pyproject", source="pyproject.toml")
 python_distribution(
     name="dist",
     dependencies=[
+        ":scrappers",
         ":pyproject",
     ],
     provides=python_artifact(
         name="scrappers",
-        version="0.1.0",
+        version="0.2.0",
     ),
     # Example of setuptools config, other build backends may have other config.
     wheel_config_settings={"--build-option": ["--python-tag", "py39"]},
+    generate_setup=False,
 )
 
 pex_binary(

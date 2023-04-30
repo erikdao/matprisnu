@@ -1,10 +1,11 @@
 [tool.poetry]
 name = "scrappers"
-version = "0.1.0"
+version = "0.2.0"
 description = "Scrappers for collecting data from supermarkets in Sweden."
 authors = ["Erik Dao <cuong@neuraltalks.io>"]
 packages = [{include = "scrappers", from = "src"}]
 classifiers = [
+    "Intended Audience :: Developers",
     "Programming Language :: Python :: 3.9",
 ]
 
@@ -19,10 +20,12 @@ loguru = "^0.6.0"
 sentry-sdk = "^1.15.0"
 click = "^8.0.3"
 luigi = "^3.2.1"
+boto3 = "^1.26.123"
+couchdb = "^1.2"
 
 [tool.semantic_release]
 branch = "main"
-version_variable = "scrappers/__init__.py:__version__"
+version_variable = "src/scrappers/__init__.py:__version__"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
