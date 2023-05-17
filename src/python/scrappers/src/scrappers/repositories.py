@@ -6,8 +6,8 @@ from abc import ABC, abstractmethod
 from datetime import datetime
 from uuid import uuid4
 
-from aiocouch import CouchDB
 import boto3
+from aiocouch import CouchDB
 from dotenv import find_dotenv, load_dotenv
 
 load_dotenv(find_dotenv())
