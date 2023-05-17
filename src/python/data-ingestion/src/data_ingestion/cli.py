@@ -77,7 +77,7 @@ def infer_schema(brand: str, json_path: str, output_path: str):
     if brand == "ica":
         infer_function = ()
     else:
-        infer_function = getattr(module, f"infer_category_products_schema")
+        infer_function = getattr(module, "infer_category_products_schema")
 
     input_categories = [
         fn.replace(".json", "") for fn in os.listdir(json_path) if fn.endswith(".json")

@@ -13,7 +13,7 @@ python_sources(
         "3rdparty/python#sentry-sdk",
         "3rdparty/python#loguru",
         "3rdparty/python#luigi",
-        "3rdparty/python#couchdb",
+        "3rdparty/python#aiocouch",
         "3rdparty/python#genson",
         "3rdparty/python#boto3",
     ],

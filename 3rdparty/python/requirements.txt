@@ -13,5 +13,5 @@ sqlalchemy==2.0.9
 pandas==2.0.0
 psycopg2-binary==2.9.6
 genson==1.2.2
-couchdb==1.2
+aiocouch==2.2.2
 boto3==1.26.123
