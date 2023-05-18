@@ -1,19 +1,14 @@
 """Coop stores scrapper."""
-import json
 import os
-from pathlib import Path
 from typing import Any, List, Optional
 
 from dotenv import load_dotenv
-from loguru import logger
-from scrappers.repositories import save_to_json
+from prefect import flow, task
 from scrappers.common import make_url, random_user_agents
-from scrappers.data_lake import AsyncDataLakeConnector
+from scrappers.repositories import save_to_json, save_to_document_store
 from tornado.escape import json_decode
 from tornado.httpclient import AsyncHTTPClient, HTTPRequest
 from tornado.httputil import HTTPHeaders
-
-from prefect import task, flow
 
 load_dotenv(os.path.join(os.getcwd(), ".env"))
 
@@ -29,30 +24,9 @@ async def scrape_stores() -> Optional[List[Any]]:
         "Ocp-Apim-Subscription-Key": os.getenv("COOP_STORES_API_SUBSCRIPTION_KEY"),
     }
     url = BASE_URL
-
     request = HTTPRequest(url=make_url(url, params), headers=HTTPHeaders(headers))
     response = await AsyncHTTPClient().fetch(request)
     return json_decode(response.body)
-
-
-async def scrapping_function(storage_path: Path, **kwargs) -> None:
-    """Stores scrapper function.
-
-    Args:
-        storage_path (Path): Path to store the scrapped data
-    """
-    stores = await scrape_stores()
-
-    logger.info(f"Got {len(stores)} stores")
-    file_path = storage_path / "stores.json"
-    logger.info(f"Write data to {file_path}")
-    with open(file_path, "w") as f:
-        json.dump(stores, f, indent=2)
-
-    logger.info("Saving scrapped data to data lake")
-    await AsyncDataLakeConnector().save_to_data_lake(
-        collection_name="stores", data=stores, brand_name="coop", id_field="storeId"
-    )
 
 
 @task(name="Save Coop stores data to JSON", tags=["coop", "stores"])
@@ -60,7 +34,13 @@ def save_stores_to_json(data):
     save_to_json(data, file_name="stores.json", brand="coop", category="stores")
 
 
-@flow(name="Scrape Coop stores", tags=["coop", "stores"])
+@task(name="Save Coop stores data to document store", tags=["coop", "stores"])
+async def save_stores_to_document_store(data):
+    await save_to_document_store(data, brand="coop", category="stores", brand_id=data.get("storeId"))
+
+
+@flow(name="Scrape Coop stores")
 async def scrape_stores_flow():
     stores = await scrape_stores()
     save_stores_to_json(stores)
+    await save_stores_to_document_store.map(stores)

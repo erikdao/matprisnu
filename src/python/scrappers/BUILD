@@ -16,6 +16,7 @@ python_sources(
         "3rdparty/python#aiocouch",
         "3rdparty/python#genson",
         "3rdparty/python#boto3",
+        "3rdparty/python#prefect",
     ],
 )
 

@@ -4,9 +4,9 @@ import json
 import os
 from abc import ABC, abstractmethod
 from datetime import datetime
-from uuid import uuid4
 from pathlib import Path
 from typing import Any, Dict
+from uuid import uuid4
 
 import boto3
 from aiocouch import CouchDB
@@ -82,17 +82,22 @@ class CouchDBRepository(AsyncDocumentRepository):
     def _gen_id(self):
         return str(uuid4().hex)
 
-    def _decorate_document(self, document):
+    def _decorate_document(self, document, **kwargs):
         document["_id"] = self._gen_id()
         # Since we only append new document to the database, we don't actually
         # need to update the document's updated_at field.
         document["updated_at"] = datetime.utcnow().isoformat()
+        for key, value in kwargs.items():
+            document[key] = value
+        
+        return document
 
-    @couchdb_context
-    async def save_data(self, db, data):
-        self._decorate_document(data)
-        doc = db.create(data["_id"], data=data)
-        return await doc.save()
+    async def save_document(self, data, **kwargs):
+        document = self._decorate_document(data, **kwargs)
+        async with CouchDB(_get_couchdb_url()) as couch:
+            db = await couch[os.getenv("COUCHDB_DATABASE")]
+            doc = await db.create(document["_id"], data=document)
+            return await doc.save()
 
 
 class CloudFlareR2Repository(DocumentRepository):
@@ -126,20 +131,28 @@ class CloudFlareR2Repository(DocumentRepository):
 def get_scrapper_respository(format: str):
     """Return a repository based on the format."""
     if format == "json":
-        return JSONRepository(storage_path=Path(os.getenv("SCRAPPER_BASE_STORAGE_PATH")))
+        return JSONRepository(
+            storage_path=Path(os.getenv("SCRAPPER_BASE_STORAGE_PATH"))
+        )
     elif format == "couchdb":
-        return CouchDBRepository
+        return CouchDBRepository()
     elif format == "cloudflare-r2":
-        return CloudFlareR2Repository
+        return CloudFlareR2Repository()
     else:
         raise ValueError(f"Unsupported format {format}")
-    
 
-def save_to_json(data: Dict[str, Any], file_name: str, brand: str, category: str, create_date_dir: bool = True):
+
+def save_to_json(
+    data: Dict[str, Any],
+    file_name: str,
+    brand: str,
+    category: str,
+    create_date_dir: bool = True,
+):
     """Save scrapped data to JSON file."""
     repo = get_scrapper_respository(format="json")
     if create_date_dir:
-        path_dir = repo.storage_path / brand / datetime.now().strftime("%Y-%m-%d") / category
+        path_dir = repo.storage_path / brand / datetime.now().strftime("%Y%m%d") / category
     else:
         path_dir = repo.storage_path / brand / category
 
@@ -147,3 +160,9 @@ def save_to_json(data: Dict[str, Any], file_name: str, brand: str, category: str
     path = path_dir / file_name
 
     repo.save_document(data, path)
+
+
+async def save_to_document_store(data, **kwargs):
+    """Save scrapped data to document store."""
+    repo = get_scrapper_respository(format="couchdb")
+    await repo.save_document(data=data, **kwargs)
