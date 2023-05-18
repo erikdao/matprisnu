@@ -89,7 +89,7 @@ class CouchDBRepository(AsyncDocumentRepository):
         document["updated_at"] = datetime.utcnow().isoformat()
         for key, value in kwargs.items():
             document[key] = value
-        
+
         return document
 
     async def save_document(self, data, **kwargs):
@@ -152,7 +152,9 @@ def save_to_json(
     """Save scrapped data to JSON file."""
     repo = get_scrapper_respository(format="json")
     if create_date_dir:
-        path_dir = repo.storage_path / brand / datetime.now().strftime("%Y%m%d") / category
+        path_dir = (
+            repo.storage_path / brand / datetime.now().strftime("%Y%m%d") / category
+        )
     else:
         path_dir = repo.storage_path / brand / category
 

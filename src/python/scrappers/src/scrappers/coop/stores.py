@@ -4,8 +4,10 @@ from typing import Any, List, Optional
 
 from dotenv import load_dotenv
 from prefect import flow, task
+from prefect.task_runners import ConcurrentTaskRunner
 from scrappers.common import make_url, random_user_agents
-from scrappers.repositories import save_to_json, save_to_document_store
+from scrappers.repositories import save_to_document_store, save_to_json
+from scrappers.utils import generate_flow_run_name
 from tornado.escape import json_decode
 from tornado.httpclient import AsyncHTTPClient, HTTPRequest
 from tornado.httputil import HTTPHeaders
@@ -35,11 +37,18 @@ def save_stores_to_json(data):
 
 
 @task(name="Save Coop stores data to document store", tags=["coop", "stores"])
-async def save_stores_to_document_store(data):
-    await save_to_document_store(data, brand="coop", category="stores", brand_id=data.get("storeId"))
+async def save_stores_to_document_store(store):
+    data = {"data": store}
+    await save_to_document_store(
+        data, brand="coop", category="stores", brand_id=store.get("storeId")
+    )
 
 
-@flow(name="Scrape Coop stores")
+@flow(
+    name="Scrape Coop stores",
+    flow_run_name=generate_flow_run_name,
+    task_runner=ConcurrentTaskRunner(),
+)
 async def scrape_stores_flow():
     stores = await scrape_stores()
     save_stores_to_json(stores)
