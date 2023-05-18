@@ -55,7 +55,7 @@ async def scrapping_function(storage_path: Path, **kwargs) -> None:
     )
 
 
-@task
+@task(name="Save Coop stores data to JSON", tags=["coop", "stores"])
 def save_stores_to_json(data):
     save_to_json(data, file_name="stores.json", brand="coop", category="stores")
 
@@ -63,3 +63,4 @@ def save_stores_to_json(data):
 @flow(name="Scrape Coop stores", tags=["coop", "stores"])
 async def scrape_stores_flow():
     stores = await scrape_stores()
+    save_stores_to_json(stores)

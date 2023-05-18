@@ -139,8 +139,11 @@ def save_to_json(data: Dict[str, Any], file_name: str, brand: str, category: str
     """Save scrapped data to JSON file."""
     repo = get_scrapper_respository(format="json")
     if create_date_dir:
-        path = repo.storage_path / brand / datetime.now().strftime("%Y-%m-%d") / category / file_name
+        path_dir = repo.storage_path / brand / datetime.now().strftime("%Y-%m-%d") / category
     else:
-        path = repo.storage_path / brand / category / file_name
+        path_dir = repo.storage_path / brand / category
+
+    Path(path_dir).mkdir(parents=True, exist_ok=True)
+    path = path_dir / file_name
 
     repo.save_document(data, path)
