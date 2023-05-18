@@ -1,20 +1,18 @@
 """Scrapeprs for Coop's products."""
 import asyncio
-import json
 import math
 import os
-from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 from data_models.scrappers import CoopAPICategory
+from loguru import logger
 from scrappers.common import make_url, random_user_agents
-from scrappers.data_lake import AsyncDataLakeConnector
-from scrappers.logger import sentry_logger as logger
+from scrappers.repositories import bulk_save_to_document_store, save_to_json
 from tornado.escape import json_decode, json_encode
 from tornado.httpclient import AsyncHTTPClient, HTTPClientError, HTTPRequest
 from tornado.httputil import HTTPHeaders
 
-concurrency = 50
+concurrency = 30
 AsyncHTTPClient.configure(None, max_clients=concurrency)
 
 BASE_URL = "https://external.api.coop.se/personalization/search/entities/by-attribute"
@@ -108,6 +106,7 @@ async def get_products_data(
         return results["count"], results["items"]
     except HTTPClientError as e:
         logger.error(e)
+        logger.debug(payload)
         raise e
 
 
@@ -143,25 +142,27 @@ async def scrape_products(category_id: str) -> List[Any]:
     return data
 
 
-async def scrapping_function(category: CoopAPICategory, storage_path: Path) -> None:
+def save_products_to_json(products, filename: str = "products.json"):
+    save_to_json(products, file_name=filename, brand="coop", category="products")
+
+
+async def save_products_to_document_store(products: List[Dict[str, Any]]) -> None:
+    """Save product to Document Store."""
+    data = []
+    for product in products:
+        data.append({"data": product, "brand_id": product.get("id"), "brand": "coop", "category": "products"})
+
+    await bulk_save_to_document_store(data)
+
+
+async def scrape_products_flow(category: CoopAPICategory) -> None:
     """Main scrapping function for aggregating category's products and write
     them to JSON files."""
     products = await scrape_products(category_id=str(category.id))
-    logger.info(f"Scrapped {len(products)} products for category: {category}")
 
     if not len(products):
         return
 
-    # Write to json
-    json_file = storage_path / f"{category.escapedName}.json"
-    with open(json_file, "w") as f:
-        json.dump(products, f, indent=2)
+    save_products_to_json(products, filename=f"{category.escapedName}.json")
 
-    logger.info("Saving scrapped products to delta lake")
-    await AsyncDataLakeConnector().save_to_data_lake(
-        data=products,
-        collection_name="products",
-        brand_name="coop",
-        id_field="id",
-        brand_category=category.escapedName,
-    )
+    await save_products_to_document_store(products)

@@ -2,6 +2,7 @@
 different storage backends."""
 import json
 import os
+import asyncio
 from abc import ABC, abstractmethod
 from datetime import datetime
 from pathlib import Path
@@ -76,8 +77,9 @@ def couchdb_context(func):
 class CouchDBRepository(AsyncDocumentRepository):
     """Repository that stores documents in CouchDB."""
 
-    def __init__(self):
+    def __init__(self, batch_size: int = 1000):
         super().__init__()
+        self.batch_size = batch_size
 
     def _gen_id(self):
         return str(uuid4().hex)
@@ -98,6 +100,20 @@ class CouchDBRepository(AsyncDocumentRepository):
             db = await couch[os.getenv("COUCHDB_DATABASE")]
             doc = await db.create(document["_id"], data=document)
             return await doc.save()
+
+    async def create_then_save(self, db, document):
+        doc = await db.create(document["_id"], data=document)
+        await doc.save()
+
+    async def bulk_save_documents(self, data, **kwargs):
+        """Save a list of documents to the repository."""
+        documents = [
+            self._decorate_document(document, **kwargs) for document in data
+        ]
+        async with CouchDB(_get_couchdb_url()) as couch:
+            db = await couch[os.getenv("COUCHDB_DATABASE")]
+            coros = [self.create_then_save(db, document) for document in documents]
+            await asyncio.gather(*coros)
 
 
 class CloudFlareR2Repository(DocumentRepository):
@@ -168,3 +184,9 @@ async def save_to_document_store(data, **kwargs):
     """Save scrapped data to document store."""
     repo = get_scrapper_respository(format="couchdb")
     await repo.save_document(data=data, **kwargs)
+
+
+async def bulk_save_to_document_store(data, **kwargs):
+    """Save scrapped data to document store."""
+    repo = get_scrapper_respository(format="couchdb")
+    await repo.bulk_save_documents(data=data, **kwargs)
