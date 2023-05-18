@@ -6,17 +6,21 @@ from typing import Any, List, Optional
 
 from dotenv import load_dotenv
 from loguru import logger
+from scrappers.repositories import save_to_json
 from scrappers.common import make_url, random_user_agents
 from scrappers.data_lake import AsyncDataLakeConnector
 from tornado.escape import json_decode
 from tornado.httpclient import AsyncHTTPClient, HTTPRequest
 from tornado.httputil import HTTPHeaders
 
+from prefect import task, flow
+
 load_dotenv(os.path.join(os.getcwd(), ".env"))
 
 BASE_URL = "https://proxy.api.coop.se/external/store/stores/map"
 
 
+@task(name="Scrape Coop stores", tags=["coop", "stores"])
 async def scrape_stores() -> Optional[List[Any]]:
     params = {"conceptIds": "12,6,95", "invertFilter": "true", "api-version": "v2"}
     headers = {
@@ -49,3 +53,13 @@ async def scrapping_function(storage_path: Path, **kwargs) -> None:
     await AsyncDataLakeConnector().save_to_data_lake(
         collection_name="stores", data=stores, brand_name="coop", id_field="storeId"
     )
+
+
+@task
+def save_stores_to_json(data):
+    save_to_json(data, file_name="stores.json", brand="coop", category="stores")
+
+
+@flow(name="Scrape Coop stores", tags=["coop", "stores"])
+async def scrape_stores_flow():
+    stores = await scrape_stores()

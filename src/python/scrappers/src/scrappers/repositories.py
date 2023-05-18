@@ -5,6 +5,8 @@ import os
 from abc import ABC, abstractmethod
 from datetime import datetime
 from uuid import uuid4
+from pathlib import Path
+from typing import Any, Dict
 
 import boto3
 from aiocouch import CouchDB
@@ -23,6 +25,23 @@ class DocumentRepository:
     def save_document(self, document):
         """Save a document to the repository."""
         pass
+
+
+class JSONRepository:
+    """Repository that stores documents in JSON files."""
+
+    def __init__(self, storage_path):
+        super().__init__()
+
+        self._storage_path = storage_path
+
+    @property
+    def storage_path(self):
+        return self._storage_path
+
+    def save_document(self, document, path):
+        with open(path, "w") as f:
+            json.dump(document, f, indent=2)
 
 
 class AsyncDocumentRepository:
@@ -102,3 +121,26 @@ class CloudFlareR2Repository(DocumentRepository):
             document = json.dumps(document)
 
         self._bucket.put_object(Key=path, Body=document)
+
+
+def get_scrapper_respository(format: str):
+    """Return a repository based on the format."""
+    if format == "json":
+        return JSONRepository(storage_path=Path(os.getenv("SCRAPPER_BASE_STORAGE_PATH")))
+    elif format == "couchdb":
+        return CouchDBRepository
+    elif format == "cloudflare-r2":
+        return CloudFlareR2Repository
+    else:
+        raise ValueError(f"Unsupported format {format}")
+    
+
+def save_to_json(data: Dict[str, Any], file_name: str, brand: str, category: str, create_date_dir: bool = True):
+    """Save scrapped data to JSON file."""
+    repo = get_scrapper_respository(format="json")
+    if create_date_dir:
+        path = repo.storage_path / brand / datetime.now().strftime("%Y-%m-%d") / category / file_name
+    else:
+        path = repo.storage_path / brand / category / file_name
+
+    repo.save_document(data, path)
