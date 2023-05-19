@@ -150,7 +150,14 @@ async def save_products_to_document_store(products: List[Dict[str, Any]]) -> Non
     """Save product to Document Store."""
     data = []
     for product in products:
-        data.append({"data": product, "brand_id": product.get("id"), "brand": "coop", "category": "products"})
+        data.append(
+            {
+                "data": product,
+                "brand_id": product.get("id"),
+                "brand": "coop",
+                "category": "products",
+            }
+        )
 
     await bulk_save_to_document_store(data)
 

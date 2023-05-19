@@ -29,7 +29,7 @@ python_distribution(
     ],
     provides=python_artifact(
         name="scrappers",
-        version="0.2.0",
+        version="0.3.0",
     ),
     # Example of setuptools config, other build backends may have other config.
     wheel_config_settings={"--build-option": ["--python-tag", "py39"]},
@@ -38,7 +38,7 @@ python_distribution(
 
 pex_binary(
     name="scrappers-cli",
-    entry_point="src/scrappers/cli.py:main",
+    entry_point="src/scrappers/cli_v2.py:main",
     dependencies=[":pyproject", ":scrappers", "src/python/data-models:data_models"],
     output_path="scrappers-cli.pex",
 )

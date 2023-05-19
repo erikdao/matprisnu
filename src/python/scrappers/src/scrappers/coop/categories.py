@@ -8,9 +8,9 @@ import asyncio
 import json
 from pathlib import Path
 from typing import Any, List, Optional, Union
+
 from data_models import CoopAPICategory
 from pydantic import parse_obj_as
-
 from scrappers.common import random_user_agents
 from scrappers.repositories import save_to_document_store, save_to_json
 from tornado.escape import json_decode

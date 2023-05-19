@@ -1,8 +1,8 @@
 """Repository module that defines how to store and retrieve documents from
 different storage backends."""
+import asyncio
 import json
 import os
-import asyncio
 from abc import ABC, abstractmethod
 from datetime import datetime
 from pathlib import Path
@@ -107,9 +107,7 @@ class CouchDBRepository(AsyncDocumentRepository):
 
     async def bulk_save_documents(self, data, **kwargs):
         """Save a list of documents to the repository."""
-        documents = [
-            self._decorate_document(document, **kwargs) for document in data
-        ]
+        documents = [self._decorate_document(document, **kwargs) for document in data]
         async with CouchDB(_get_couchdb_url()) as couch:
             db = await couch[os.getenv("COUCHDB_DATABASE")]
             coros = [self.create_then_save(db, document) for document in documents]

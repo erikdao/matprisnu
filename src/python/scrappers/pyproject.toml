@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "scrappers"
-version = "0.2.0"
+version = "0.3.0"
 description = "Scrappers for collecting data from supermarkets in Sweden."
 authors = ["Erik Dao <cuong@neuraltalks.io>"]
 packages = [{include = "scrappers", from = "src"}]
